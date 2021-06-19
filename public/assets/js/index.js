@@ -4,6 +4,11 @@ let saveNoteBtn;
 let newNoteBtn;
 let noteList;
 let count = 0;
+let s4 = () => {
+  return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+}
 
 if (window.location.pathname === '/notes') {
   noteTitle = document.querySelector('.note-title');
@@ -71,9 +76,8 @@ const handleNoteSave = () => {
   const newNote = {
     title: noteTitle.value,
     text: noteText.value,
-    key: count
+    id: s4()
   };
-  count++
   saveNote(newNote).then(() => {
     getAndRenderNotes();
     renderActiveNote();
@@ -84,10 +88,8 @@ const handleNoteSave = () => {
 const handleNoteDelete = (e) => {
   // Prevents the click listener for the list from being called when the button inside of it is clicked
   e.stopPropagation();
-
   const note = e.target;
   const noteId = JSON.parse(note.parentElement.getAttribute('data-note')).id;
-
   if (activeNote.id === noteId) {
     activeNote = {};
   }
@@ -122,10 +124,10 @@ const handleRenderSaveBtn = () => {
 // Render the list of note titles
 const renderNoteList = async (notes) => {
   let jsonNotes = await notes.json();
+  jsonNotes = JSON.parse(jsonNotes);
   if (window.location.pathname === '/notes') {
     noteList.forEach((el) => (el.innerHTML = ''));
   }
-
   let noteListItems = [];
 
   // Returns HTML element with or without a delete button
