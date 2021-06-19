@@ -22,7 +22,7 @@ app.get("/api/notes", (req, res) => {
   });
 });
 
-app.listen(port, () => console.log(`Example app listening on port port!`));
+app.listen(port, () => console.log(`App listening on port port!`));
 
 app.post("/api/notes", function (req, res) {
   res.send("POST request to the homepage");
